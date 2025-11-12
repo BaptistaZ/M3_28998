@@ -1,0 +1,14 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+# IDE
+.vs/
+.vscode/
+# OS
+.DS_Store
+# Docker
+**/docker-data/

@@ -1,0 +1,26 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: tiago
+      RABBITMQ_DEFAULT_PASS: 12345
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+      MONGO_INITDB_DATABASE: integracao
+    volumes:
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data: {}
