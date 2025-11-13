@@ -58,8 +58,12 @@ docker compose up -d
 docker ps  
 
 📍 Serviços disponíveis:  
-• RabbitMQ → http://localhost:15672 (user: tiago / pass: 12345)  
-• MongoDB → mongodb://localhost:27017  
+• RabbitMQ → http://localhost:15672 (user: `tiago` / pass: `12345`)  
+• MongoDB → `mongodb://localhost:27017`  
+
+⚠️ **Nota (credenciais académicas)**  
+As credenciais configuradas nos contentores (`tiago` / `12345` em RabbitMQ e `tiago_28998` / `28998` em MongoDB) são usadas **apenas para efeitos desta unidade curricular**.  
+Em contexto real, estes valores devem ser definidos via variáveis de ambiente (`.env`, secret managers, etc.) e **nunca** expostos em repositórios públicos. 
 
 3️⃣ **Executar os projetos .NET**
 
@@ -93,7 +97,13 @@ mongosh
 use integracao_28998  
 db.ingest.find().pretty()  
 
-•	Confirmar o documento inserido com os campos enviados no POST  
+Se a autenticação estiver configurada no MongoDB (por exemplo, com o utilizador `tiago_28998`), também se pode ligar diretamente com:
+
+`mongosh "mongodb://tiago_28998:28998@localhost:27017/integracao_28998"`
+
+e depois executar:
+
+`db.ingest.find().pretty()` 
 
 7️⃣ **Encerrar os serviços**  
 
@@ -106,7 +116,7 @@ docker compose down -v
 M3_28998/  
 ├── IngestApi/ → API REST (.NET 8)  
 ├── QueueConsumer/ → Serviço Worker (.NET 8)  
-├── mongo-init/ → Scripts de inicialização do MongoDB  
+├── mongo-init/ → Scripts de inicialização do MongoDB (montados em `/docker-entrypoint-initdb.d` e executados automaticamente no primeiro arranque do contentor)  
 ├── docker-compose.yml → Definição dos serviços RabbitMQ e MongoDB  
 └── README.md → Este documento  
 
