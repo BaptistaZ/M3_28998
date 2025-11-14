@@ -91,7 +91,7 @@ namespace IngestApi.Services
                 _settings.QueueName,
                 messageId);
 
-            // O client do RabbitMQ é síncrono; aqui só devolvemos o ID já gerado
+            // O client do RabbitMQ é síncrono; aqui só devolve o ID já gerado
             return Task.FromResult(messageId);
         }
 

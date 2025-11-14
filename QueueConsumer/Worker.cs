@@ -65,7 +65,7 @@ namespace QueueConsumer
             _connection = factory.CreateConnection("queue-consumer");
             _channel = _connection.CreateModel();
 
-            // DLX configurado (se não vier das settings, assume "dlx" como nome por omissão)
+            // DLX configurado 
             var dlxName = _mq.DeadLetterExchangeName ?? "dlx";
 
             // Declara fila principal com DLX associado

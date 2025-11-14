@@ -28,7 +28,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: rootpass
 
       # Base de dados inicial onde os scripts de mongo-init podem atuar
-      # (no nosso caso, o 01-init.js cria o utilizador 'tiago_28998'
+      # (neste, o 01-init.js cria o utilizador 'tiago_28998'
       # com readWrite na base 'integracao_28998')
       MONGO_INITDB_DATABASE: integracao_28998
     volumes:
