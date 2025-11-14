@@ -1,25 +1,41 @@
+version: "3.9"
+
 services:
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitmq
+    restart: unless-stopped
     ports:
+      # Porta AMQP para ligação das aplicações (.NET)
       - "5672:5672"
+      # Porta da interface de gestão (RabbitMQ Management UI)
       - "15672:15672"
     environment:
+      # Credenciais apenas para contexto académico
       RABBITMQ_DEFAULT_USER: tiago
       RABBITMQ_DEFAULT_PASS: 12345
 
   mongodb:
     image: mongo:7
     container_name: mongodb
+    restart: unless-stopped
     ports:
+      # Porta padrão do MongoDB
       - "27017:27017"
     environment:
+      # Utilizador root inicial do MongoDB (apenas para administração)
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpass
-      MONGO_INITDB_DATABASE: integracao
+
+      # Base de dados inicial onde os scripts de mongo-init podem atuar
+      # (no nosso caso, o 01-init.js cria o utilizador 'tiago_28998'
+      # com readWrite na base 'integracao_28998')
+      MONGO_INITDB_DATABASE: integracao_28998
     volumes:
+      # Scripts de inicialização (01-init.js) montados em modo read-only
       - ./mongo-init:/docker-entrypoint-initdb.d:ro
+
+      # Volume para persistência dos dados do MongoDB
       - mongo-data:/data/db
 
 volumes:

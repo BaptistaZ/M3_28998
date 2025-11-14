@@ -1,21 +1,24 @@
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using QueueConsumer.Models;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((ctx, services) =>
     {
+        // Liga secção "Messaging" do appsettings às configurações de RabbitMQ
         services.Configure<MessagingSettings>(ctx.Configuration.GetSection("Messaging"));
+
+        // Liga secção "Mongo" do appsettings às configurações de MongoDB
         services.Configure<MongoSettings>(ctx.Configuration.GetSection("Mongo"));
 
+        // Registo do MongoClient como singleton (thread-safe e reutilizável)
         services.AddSingleton(sp =>
         {
-            var m = sp.GetRequiredService<IOptions<MongoSettings>>().Value;
-            return new MongoClient(m.ConnectionString);
+            var mongoSettings = sp.GetRequiredService<IOptions<MongoSettings>>().Value;
+            return new MongoClient(mongoSettings.ConnectionString);
         });
 
+        // Registo do serviço de background que consome da fila e persiste no MongoDB
         services.AddHostedService<QueueConsumer.Worker>();
     })
     .Build();
